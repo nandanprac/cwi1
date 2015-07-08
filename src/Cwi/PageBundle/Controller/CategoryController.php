@@ -17,7 +17,7 @@ class CategoryController extends Controller
         $feeds=$FeedFilter->fetchfeed($params);
 
         if($page==0 && $AjaxRequest==0) {
-            return $this->render('CwiPageBundle:Feed:feed.html.twig', array('feeds' => $feeds->questions));
+            return $this->render('CwiPageBundle:Feed:feed.html.twig', array('feeds' => $feeds->questions,'page_title'=>'Category'));
         }else{
             $template =  $this->get('twig')->render('CwiPageBundle:Feed:feedcontent.html.twig',array('feeds'=>$feeds->questions));
             $ajax_response=array(

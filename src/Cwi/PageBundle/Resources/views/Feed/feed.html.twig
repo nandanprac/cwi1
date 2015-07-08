@@ -1,6 +1,6 @@
 {% extends 'CwiPageBundle::layout.html.twig' %}
 
-{% block title %}Consult Feeds{% endblock %}
+{% block title %}{% if page_title is defined %} {{ page_title }} {% else %} Consult Feeds {% endif %} {% endblock %}
 
 {% block body %}
 
