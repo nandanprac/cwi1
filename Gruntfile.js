@@ -10,7 +10,10 @@ module.exports = function (grunt) {
                 files: {
                     'js/jquery.js': 'jquery/dist/jquery.js',
                     'js/bootstrap.js': 'bootstrap/dist/js/bootstrap.js',
-                    'js/angular.js': 'angular/angular.js'
+                    'js/angular.js': 'angular/angular.js',
+                    'js/hinclude.js': 'hinclude/hinclude.js',
+                    'js/ng-infinite-scroll.js': 'ngInfiniteScroll/build/ng-infinite-scroll.js',
+                    'js/angular-route.js': 'angular-route/angular-route.js',
                 }
             },
             stylesheets: {

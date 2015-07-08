@@ -28,7 +28,8 @@
         "friendsofsymfony/rest-bundle": "~1.5",
         "guzzlehttp/guzzle": "~5.0",
         "sensio/buzz-bundle": "dev-master",
-        "snowcap/im-bundle": "~2.0"
+        "snowcap/im-bundle": "~2.0",
+        "friendsofsymfony/jsrouting-bundle": "^1.5"
     },
     "require-dev": {
         "sensio/generator-bundle": "~2.3"

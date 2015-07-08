@@ -1,0 +1,22 @@
+cwi_page_homepage:
+    path:     /hello/{name}
+    defaults: { _controller: CwiPageBundle:Default:index }
+
+cwi_page_sidebar:
+    path:     /sidebar
+    defaults: { _controller: CwiPageBundle:Widget:sidebar }
+    options:
+      expose: true
+
+cwi_page_feed:
+    path:     /feed
+    defaults: { _controller: CwiPageBundle:Feed:index }
+    options:
+      expose: true
+
+
+cwi_page_category:
+    path:     /category/{category}
+    defaults: { _controller: CwiPageBundle:Category:index }
+    options:
+      expose: true

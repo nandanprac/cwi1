@@ -1,0 +1,19 @@
+{% block sidebar %}
+
+    <div class="custsidebar">
+        <h4 class="sidebarh4">Get answers about your health also!</h4>
+        <button type="button" class="btn btn-warning sidebarbtn uppercase">Ask Doctors Now</button>
+        <p class="fw6 greymid sidebarp"> Health Topics</p>
+
+        {% for topic in topics %}
+            {# <button type="button" class="btn btn-default sdbtn">{{ topic }}</button> #}
+            <a href="{{ weburl }}#/category/{{ topic | lower }}" class="btn btn-default sdbtn">{{ topic }}</a>
+
+            {# href="#/category/{{ topic | lower }}" #}
+        {% endfor %}
+
+    </div>
+
+
+
+{% endblock %}

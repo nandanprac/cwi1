@@ -1,0 +1,14 @@
+services:
+#    cwi_page.example:
+#        class: Cwi\PageBundle\Example
+#        arguments: [@service_id, "plain_value", %parameter%]
+
+    consult.feed_filter:
+        class: Cwi\PageBundle\Manager\FeedManager
+        arguments:
+          - %consultliveurl%
+
+    consult.general:
+        class: Cwi\PageBundle\Manager\BaseManager
+        arguments:
+          - %consultliveurl%

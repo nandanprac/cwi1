@@ -1,0 +1,36 @@
+{% extends 'CwiPageBundle::layout.html.twig' %}
+
+{% block title %}Consult Feeds{% endblock %}
+
+{% block body %}
+
+<div class="col-lg-14 col-md-14">
+    <ul class="breadcrumb">
+        <li><a href="#">< Health Feed</a></li>
+        <!--<li><a href="#">Dentist</a></li>-->
+    </ul>
+
+    <h1 class="space">Health Feed</h1>
+    <hr>
+    <div id="feeds">
+        {% include 'CwiPageBundle:Feed:feedcontent.html.twig' %}
+    </div>
+
+
+
+    {% verbatim %}
+    <div>
+    <div ng-controller='ConsultController'>
+        <div infinite-scroll='consult.nextPage()' infinite-scroll-disabled='consult.busy' infinite-scroll-distance='1'>
+
+            <div ng-show='consult.busy'>Loading data...</div>
+        </div>
+    </div>
+        </div>
+
+    {% endverbatim %}
+
+
+</div>
+
+{% endblock %}

@@ -1,13 +1,177 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8" />
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
-        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
-    </head>
-    <body>
-        {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
-    </body>
+<head lang="en">
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <base href="/">
+
+    <title>{% block title %}Consult Web{% endblock %}</title>
+
+    {#{% stylesheets '@jquery_bootstrap_css' '@CwiPageBundle/Resources/public/css/*' %}#}
+    {% stylesheets '@CwiPageBundle/Resources/public/css/*' %}
+    <link rel="stylesheet" href="{{ asset_url }}" />
+    {% endstylesheets %}
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body ng-app='myApp'>
+
+{% block navigation %}
+    {% include 'CwiPageBundle::header.html.twig' %}
+{% endblock %}
+
+<!-- Page Content -->
+<div class="container">
+    <div class="row">
+
+        <!-- Main Content -->
+        {% block body %}
+        {% endblock %}
+
+
+        <!-- Extra Column Space -->
+        <div class="col-lg-3 col-md-3">&nbsp;</div>
+
+        <!-- Sidebar -->
+        <div class="col-lg-7 col-md-7 paddingrightzero">
+            <!-- Blog Search Well -->
+            <div class="well paddingrightzero col-lg-offset-1 hidden-sm hidden-xs">
+                {% block sidebar %}
+                    {{ render(controller('CwiPageBundle:Widget:sidebar')) }}
+                {% endblock %}
+            </div>
+        </div>
+
+    </div>
+
+    <hr>
+
+    {% block footer %}
+        {% include 'CwiPageBundle::footer.html.twig' %}
+    {% endblock %}
+
+</div>
+
+{% javascripts '@jquery_bootstrap_js' '@angularjs' '@infscroll' %}
+<script src="{{ absolute_url(asset_url) }}"></script>
+{% endjavascripts %}
+
+<script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+<script src="{{ path('fos_js_routing_js', {'callback': 'fos.Router.setData'}) }}"></script>
+
+{% block infscoll %}
+
+<script type="text/javascript">
+
+    var newpage=true;
+    var myApp = angular.module('myApp', ['ngRoute','infinite-scroll']);
+
+    myApp.controller('ConsultController', function($scope,$location, Consult) {
+        $scope.consult = new Consult();
+    });
+
+    myApp.config(['$routeProvider', '$locationProvider' , function ($routeProvider,$locationProvider) {
+
+        $locationProvider.html5Mode(true);
+    }]);
+
+    myApp.run( function($rootScope, $location, $http, Consult) {
+        $rootScope.$watch(function()
+                {
+                    return $location.path();
+                },
+                function(a)
+                {
+                    var url=getUrlPath($location.path(),0,1);
+                    console.log('url has changed: ' + a);
+                    console.log('Going to Call: '+url);
+                    $http.get(url).success(function(data) {
+                        console.log(data);
+                        var myEl = angular.element(document.querySelector('#feeds'));
+                        //myEl.append(data.template);
+                        myEl.html(data.template);
+                        newpage=true;
+                    });
+                    // show loading div, etc...
+                });
+    });
+
+    myApp.factory('Consult', function($http,$location) {
+        var Consult = function() {
+            this.busy = false;
+            this.lastpage=false;
+            this.pageno = 1;
+        };
+
+        Consult.prototype.nextPage = function() {
+            if(newpage)
+            {
+                this.lastpage=false;
+                this.pageno=1;
+                this.busy=false;
+            }
+            console.log('Last Page: '+this.lastpage);
+            newpage=false;
+            if (this.busy) return;
+            if(this.lastpage) return;
+            var url=getUrlPath($location.path(),this.pageno);
+            this.busy = true;
+
+            //var url= Routing.generate('cwi_page_feed', {page: this.pageno});
+            //var url= Routing.generate('cwi_page_category', {abc,page: this.pageno},true);
+            console.log('Going to Call: '+url);
+            $http.get(url).success(function(data) {
+                console.log(data);
+                var myEl = angular.element(document.querySelector('#feeds'));
+                myEl.append(data.template);
+                this.lastpage=data.lastpage;
+                this.pageno+=1;
+                this.busy = false;
+            }.bind(this));
+        };
+
+        return Consult;
+    });
+
+    function getUrlPath(url,pageno,fetchtype)
+    {
+       // console.log('URL: '+url);
+        var split = url.split("/");
+        var rpath=split[1];
+
+        if(typeof fetchtype === 'undefined')
+        {
+            fetchtype=0;
+        }
+
+        switch(rpath)
+        {
+            case '':    var url= Routing.generate('cwi_page_feed', {page: pageno, ajax: fetchtype});
+                        console.log('Built URL: '+url);
+                        return url;
+                        break;
+            case 'category':    var category_name=split[2];
+                                var url= Routing.generate('cwi_page_category', {category: category_name,page: pageno, ajax: fetchtype});
+                                console.log('Built URL: '+url);
+                                return url;
+                                break;
+        }
+    }
+
+</script>
+
+{% endblock %}
+
+</body>
 </html>

@@ -1,3 +1,17 @@
+cwi_page:
+    resource: "@CwiPageBundle/Resources/config/routing.yml"
+    prefix:   /
+
 app:
     resource: "@AppBundle/Controller/"
     type:     annotation
+
+_homepage:
+    path:     /
+    defaults: { _controller: CwiPageBundle:Feed:index }
+    options:
+      expose: true
+
+
+fos_js_routing:
+    resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"
