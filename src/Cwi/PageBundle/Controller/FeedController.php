@@ -19,12 +19,13 @@ class FeedController extends Controller
         // $_GET parameters
 
         $page=$request->query->get('page',0);
+        $AjaxRequest=$request->query->get('ajax',0);
 
         $params=array('page'=>$page);
         $FeedFilter = $this->get('consult.feed_filter');
         $feeds=$FeedFilter->fetchfeed($params);
 
-        if($page==0) {
+        if($page==0 && $AjaxRequest==0) {
             return $this->render('CwiPageBundle:Feed:feed.html.twig', array('feeds' => $feeds->questions));
         }else{
             $template =  $this->get('twig')->render('CwiPageBundle:Feed:feedcontent.html.twig',array('feeds'=>$feeds->questions));
