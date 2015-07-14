@@ -284,7 +284,7 @@ h1.space {
 }
 
 .sdbtn {
-    margin: 5px 4px;
+    margin: 5px 2px;
     font-size: 12px;
     border-radius: 0px;
     color: #777;
@@ -322,4 +322,9 @@ h1.space {
 .nav-bottom > li > a {
     color: #999;
     font-size: 14px;
+}
+
+hr.comment{
+    border: 1px solid #E2E2E2;
+    border-bottom: none;
 }

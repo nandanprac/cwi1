@@ -1,0 +1,21 @@
+{% extends 'CwiPageBundle::layout.html.twig' %}
+
+{% block title %}{% if page_title is defined %} {{ page_title }} {% else %} Consult Feeds {% endif %} {% endblock %}
+
+
+{% block body %}
+
+    <div class="col-lg-14 col-md-14">
+        <ul class="breadcrumb">
+            <li><a href="#">< Health Feed</a></li>
+            <!--<li><a href="#">Dentist</a></li>-->
+        </ul>
+
+        <div id="feeds">
+            {% include 'CwiPageBundle:Question:questioncontent.html.twig' %}
+        </div>
+
+        </div>
+
+
+{% endblock %}

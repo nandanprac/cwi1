@@ -12,7 +12,8 @@
     <title>{% block title %}Consult Web{% endblock %}</title>
 
     {#{% stylesheets '@jquery_bootstrap_css' '@CwiPageBundle/Resources/public/css/*' %}#}
-    {% stylesheets '@CwiPageBundle/Resources/public/css/*' %}
+    {% stylesheets filter='cssrewrite'
+        'bundles/cwipage/css/*' %}
     <link rel="stylesheet" href="{{ asset_url }}" />
     {% endstylesheets %}
 
@@ -75,6 +76,7 @@
 <script type="text/javascript">
 
     var newpage=true;
+    var startnav = false;
     var myApp = angular.module('myApp', ['ngRoute','infinite-scroll']);
 
     myApp.controller('ConsultController', function($scope,$location, Consult) {
@@ -95,14 +97,25 @@
                 {
                     var url=getUrlPath($location.path(),0,1);
                     console.log('url has changed: ' + a);
-                    console.log('Going to Call: '+url);
-                    $http.get(url).success(function(data) {
-                        console.log(data);
+                    console.log('Going to Call New URL: '+url);
+                    if(startnav)
+                    {
                         var myEl = angular.element(document.querySelector('#feeds'));
-                        //myEl.append(data.template);
-                        myEl.html(data.template);
-                        newpage=true;
-                    });
+                        myEl.html('<div ng-show="consult.busy">Loading data...</div>');
+
+                        $http.get(url).success(function(data) {
+                            console.log(data);
+                            var myEl = angular.element(document.querySelector('#feeds'));
+                            //myEl.append(data.template);
+                            myEl.html(data.template);
+                            newpage=true;
+                        });
+                    }
+                    startnav=true;
+
+
+
+
                     // show loading div, etc...
                 });
     });
@@ -130,7 +143,11 @@
 
             //var url= Routing.generate('cwi_page_feed', {page: this.pageno});
             //var url= Routing.generate('cwi_page_category', {abc,page: this.pageno},true);
-            console.log('Going to Call: '+url);
+            console.log('Going to Call Next Page URL: '+url);
+            if(splitUrl($location.path())[1]=='question'){
+                this.busy = false;
+                return;
+            }
             $http.get(url).success(function(data) {
                 console.log(data);
                 var myEl = angular.element(document.querySelector('#feeds'));
@@ -144,10 +161,16 @@
         return Consult;
     });
 
+    function splitUrl(url)
+    {
+        var split = url.split("/");
+        return split;
+    }
+
     function getUrlPath(url,pageno,fetchtype)
     {
        // console.log('URL: '+url);
-        var split = url.split("/");
+        var split = splitUrl(url);
         var rpath=split[1];
 
         if(typeof fetchtype === 'undefined')
@@ -163,6 +186,11 @@
                         break;
             case 'category':    var category_name=split[2];
                                 var url= Routing.generate('cwi_page_category', {category: category_name,page: pageno, ajax: fetchtype});
+                                console.log('Built URL: '+url);
+                                return url;
+                                break;
+            case 'question':    var qid=split[2];
+                                var url= Routing.generate('cwi_page_question', {qid: qid, ajax: fetchtype});
                                 console.log('Built URL: '+url);
                                 return url;
                                 break;

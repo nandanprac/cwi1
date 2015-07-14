@@ -12,3 +12,7 @@ services:
         class: Cwi\PageBundle\Manager\BaseManager
         arguments:
           - %consultliveurl%
+
+
+    consult.basehelper:
+        class: Cwi\PageBundle\Helper\Base

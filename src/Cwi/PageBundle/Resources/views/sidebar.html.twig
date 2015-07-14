@@ -7,7 +7,7 @@
 
         {% for topic in topics %}
             {# <button type="button" class="btn btn-default sdbtn">{{ topic }}</button> #}
-            <a href="{{ weburl }}#/category/{{ topic | lower }}" class="btn btn-default sdbtn">{{ topic }}</a>
+            <a href="{{ weburl }}#/category/{{ topic.url | lower }}" class="btn btn-default sdbtn">{{ topic.topictext }}</a>
 
             {# href="#/category/{{ topic | lower }}" #}
         {% endfor %}

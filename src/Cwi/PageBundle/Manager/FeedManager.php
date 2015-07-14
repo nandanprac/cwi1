@@ -45,8 +45,20 @@ class FeedManager extends BaseManager
             $Feeds->lastpage=$LastPage;
             return $Feeds;
         }
-        catch(Exception $e)
-        {
+        catch(Exception $e) {
+
+        }
+    }
+
+    public function fetchquestion($params)
+    {
+        $client = new Client(array('base_url'=>$this->ConsultUrl));
+        try{
+            $response = $client->get('questions/'.$params['qid']);
+            $QuestionDetails=json_decode($response->getBody());
+            return $QuestionDetails;
+        }
+        catch(Exception $e){
 
         }
     }

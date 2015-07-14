@@ -20,3 +20,11 @@ cwi_page_category:
     defaults: { _controller: CwiPageBundle:Category:index }
     options:
       expose: true
+
+cwi_page_question:
+    path:     /question/{qid}
+    defaults: { _controller: CwiPageBundle:Question:index }
+    requirements:
+        qid:  \d+
+    options:
+      expose: true
